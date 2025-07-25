@@ -18,8 +18,8 @@ def convert_csv_to_parquet(csv_path, parquet_path):
 
 if __name__ == "__main__":
     # Define the input and output file paths
-    input_csv = 'all_news.csv'
-    output_parquet = 'merged_all_news.parquet'
+    input_csv = 'final_all_news_combined.csv'
+    output_parquet = 'final_merged_all_news.parquet'
 
     # Perform the conversion
     convert_csv_to_parquet(input_csv, output_parquet)
