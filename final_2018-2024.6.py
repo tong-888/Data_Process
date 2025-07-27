@@ -8,7 +8,7 @@ output_csv_name = 'final_2018-2024.6_combined.csv'
 # 同样，使用相同的日志文件名来追加记录
 log_file_name = 'processing_log.txt'
 
-print(f"步骤 1/8: 开始处理文件 '{csv_file_name}'...")
+print(f"步骤 1/7: 开始处理文件 '{csv_file_name}'...")
 
 # 读取CSV文件。根据您的描述（无列名，三列），我们设置 header=None。
 # 保留您指定的 'latin-1' 编码，这对于正确读取特定文件至关重要。
@@ -28,7 +28,7 @@ except Exception as e:
 # --- 2. 去重并统计 ---
 # 记录去重前的原始行数
 initial_rows = len(df)
-print(f"\n步骤 2/8: 开始去重... 初始新闻条数: {initial_rows}")
+print(f"\n步骤 2/7: 开始去重... 初始新闻条数: {initial_rows}")
 
 # 根据“日期”和“新闻内容”两列来识别和删除重复行
 # 注意：此时的'DATE'列还是字符串，但不影响基于字符串的精确匹配去重
@@ -60,13 +60,13 @@ def parse_mixed_dates(date_str):
             # 如果两种格式都失败，返回 NaT (Not a Time)，表示无法解析
             return pd.NaT
 
-print("\n步骤 3/8: 正在使用自定义函数解析混合日期格式...")
+print("\n步骤 3/7: 正在使用自定义函数解析混合日期格式...")
 df['DATE'] = df['DATE'].apply(parse_mixed_dates)
 print("日期格式解析完成。")
 
 
 # --- 4. 清理无效日期 ---
-print("\n步骤 4/8: 正在移除无法解析的无效日期行...")
+print("\n步骤 4/7: 正在移除无法解析的无效日期行...")
 # 删除那些日期解析后为空值 (NaT) 的行，确保后续操作不会出错
 rows_before_dropna = len(df)
 df.dropna(subset=['DATE'], inplace=True)
@@ -75,7 +75,7 @@ print(f"移除了 {rows_before_dropna - rows_after_dropna} 条无效日期行。
 
 
 # --- 5. 合并标题和内容 ---
-print("\n步骤 5/8: 正在将新闻标题合并到内容前方...")
+print("\n步骤 5/7: 正在将新闻标题合并到内容前方...")
 df['CONTENT'] = df['TITLE'].astype(str) + '\n' + df['CONTENT'].astype(str)
 print("标题与内容合并完成。")
 
@@ -85,22 +85,20 @@ def join_text(texts):
     """将一个Series中的所有文本元素用 '\n\n' 连接成一个字符串"""
     return '\n\n'.join(texts.astype(str))
 
-print("\n步骤 6/8: 准备按日期分组...")
-
-
+print("\n步骤 6/7: 跳过按日期分组合并内容步骤...")
 # --- 7. 按日期分组并合并内容 ---
-print("\n步骤 7/8: 正在按日期合并所有新闻内容...")
-grouped_content = df.groupby(df['DATE'].dt.date)['CONTENT'].apply(join_text)
-result_df = grouped_content.reset_index()
-print("所有新闻已按日期合并完毕。")
+# print("\n步骤 7/8: 正在按日期合并所有新闻内容...")
+# grouped_content = df.groupby(df['DATE'].dt.date)['CONTENT'].apply(join_text)
+# result_df = grouped_content.reset_index()
+# print("所有新闻已按日期合并完毕。")
 
 
 # --- 8. 保存结果并追加日志 ---
-print(f"\n步骤 8/8: 正在保存结果并更新日志文件...")
+print(f"\n步骤 7/7: 正在保存结果并更新日志文件...")
 
 # 将最终处理好的DataFrame保存为CSV文件
-# 即使输入是latin-1，输出时使用 'utf-8-sig' 也是最佳实践，能确保Excel无乱码打开
-result_df.to_csv(output_csv_name, index=False, encoding='utf-8-sig')
+# 直接使用 df 保存结果
+df.to_csv(output_csv_name, index=False, encoding='utf-8-sig')
 print(f"处理完成！结果已成功保存到文件：{output_csv_name}")
 
 # --- 将本次统计信息追加到日志文件 ---

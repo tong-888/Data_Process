@@ -3,7 +3,7 @@ import time # 引入time模块来获取当前时间
 
 # --- 1. 配置与加载 ---
 # 定义输入和输出文件名
-excel_file_name = '结果2024_7_3to2025_3_15.xlsx'
+excel_file_name = '数据/data/结果2024_7_3to2025_3_15.xlsx'
 output_csv_name = 'final_2024.7-2025.3_combined.csv'
 # 继续使用同一个日志文件进行追加记录
 log_file_name = 'processing_log.txt'
@@ -75,23 +75,24 @@ def join_text(texts):
 
 print("\n步骤 6/8: 准备按日期分组...")
 
-
 # --- 7. 按日期分组并合并内容 ---
-print("\n步骤 7/8: 正在按日期合并所有文本内容...")
+# print("\n步骤 7/8: 正在按日期合并所有文本内容...")
 # 按 'date' 列的日期部分分组，并对 'text' 列应用合并函数
-grouped_content = df.groupby(df['date'].dt.date)['text'].apply(join_text)
-result_df = grouped_content.reset_index()
+# grouped_content = df.groupby(df['date'].dt.date)['text'].apply(join_text)
+# result_df = grouped_content.reset_index()
 
 # 为了与之前的输出文件保持一致，重命名列
-result_df.columns = ['DATE', 'CONTENT']
-print("所有记录已按日期合并完毕。")
+# result_df.columns = ['DATE', 'CONTENT']
+# print("所有记录已按日期合并完毕。")
 
 
 # --- 8. 保存结果并追加日志 ---
 print(f"\n步骤 8/8: 正在保存结果并更新日志文件...")
 
 # 将最终处理好的DataFrame保存为CSV文件
-result_df.to_csv(output_csv_name, index=False, encoding='utf-8-sig')
+# 直接使用 df 保存结果，并调整列名
+df = df.rename(columns={'date': 'DATE', 'text': 'CONTENT'})
+df.to_csv(output_csv_name, index=False, encoding='utf-8-sig')
 print(f"处理完成！结果已成功保存到文件：{output_csv_name}")
 
 # --- 将本次统计信息追加到日志文件 ---

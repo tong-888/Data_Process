@@ -65,7 +65,6 @@ print("\n步骤 4/7: 正在将新闻标题合并到内容前方...")
 df['CONTENT'] = df['TITLE'].astype(str) + '\n' + df['CONTENT'].astype(str)
 print("标题与内容合并完成。")
 
-
 # --- 5. 定义文本合并函数 ---
 def join_text(texts):
     """将一个Series中的所有文本元素用 '\n\n' 连接成一个字符串"""
@@ -73,19 +72,18 @@ def join_text(texts):
 
 print("\n步骤 5/7: 准备按日期分组...")
 
-
 # --- 6. 按日期分组并合并内容 ---
-print("\n步骤 6/7: 正在按日期合并所有新闻内容...")
-grouped_content = df.groupby(df['DATE'].dt.date)['CONTENT'].apply(join_text)
-result_df = grouped_content.reset_index()
-print("所有新闻已按日期合并完毕。")
-
+# print("\n步骤 6/7: 正在按日期合并所有新闻内容...")
+# grouped_content = df.groupby(df['DATE'].dt.date)['CONTENT'].apply(join_text)
+# result_df = grouped_content.reset_index()
+# print("所有新闻已按日期合并完毕。")
 
 # --- 7. 保存结果并追加日志 ---
 print(f"\n步骤 7/7: 正在保存结果并更新日志文件...")
 
 # 将最终处理好的DataFrame保存为CSV文件
-result_df.to_csv(output_csv_name, index=False, encoding='utf-8-sig')
+# 直接使用 df 保存结果
+df.to_csv(output_csv_name, index=False, encoding='utf-8-sig')
 print(f"处理完成！结果已成功保存到文件：{output_csv_name}")
 
 # --- 将本次统计信息追加到日志文件 ---

@@ -57,20 +57,18 @@ def join_text(texts):
 
 print("\n步骤 5/7: 准备按日期分组...")
 
-
 # --- 6. 按日期分组并合并内容 ---
-print("\n步骤 6/7: 正在按日期合并所有新闻内容...")
-grouped_content = df.groupby(df['DATE'].dt.date)['CONTENT'].apply(join_text)
-result_df = grouped_content.reset_index()
-print("所有新闻已按日期合并完毕。")
-
+# print("\n步骤 6/7: 正在按日期合并所有新闻内容...")
+# grouped_content = df.groupby(df['DATE'].dt.date)['CONTENT'].apply(join_text)
+# result_df = grouped_content.reset_index()
+# print("所有新闻已按日期合并完毕。")
 
 # --- 7. 保存结果 ---
 print(f"\n步骤 7/7: 正在将结果保存到文件 '{output_csv_name}'...")
-result_df.to_csv(output_csv_name, index=False, encoding='utf-8-sig')
+# 使用 df 替代 result_df 保存结果
+df.to_csv(output_csv_name, index=False, encoding='utf-8-sig')
 print("-" * 50)
 print(f"处理完成！结果已成功保存到文件：{output_csv_name}")
-
 
 # --- 新增步骤 8: 将统计信息追加到日志文件 ---
 print(f"\n新增步骤: 正在将本次统计信息追加到日志文件 '{log_file_name}'...")
